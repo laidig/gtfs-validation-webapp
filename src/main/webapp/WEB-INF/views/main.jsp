@@ -24,6 +24,20 @@ $(document).ready(function() {
 		{
 			alert("Please select a zip file");
 			return false;
+		}else
+		{
+			 $.ajax({
+				  	type: "POST",
+			        url: $(this).attr("action"),
+			        data: $(this).serializeArray(),
+			        async:false,
+				    success: function(data)
+				    {
+				      //callback methods go right here
+				    }
+				  });
+			 
+			// event.preventDefault();
 		}
 	});
 	

@@ -11,24 +11,28 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class GTFSFiles {
 	ApplicationContext ctx = new AnnotationConfigApplicationContext(GTFSConfig.class);
 	private GTFSConfig Config = ctx.getBean(GTFSConfig.class);
-	
+
 	public GTFSFiles() {
 	}
 
 	public ArrayList<String> List(){
 		ArrayList<String> List = new ArrayList<String>();
-		File folder = new File(Config.getPath());
-		File[] listOfFiles = folder.listFiles();
 
-		for (int i = 0; i < listOfFiles.length; i++) {
-			if (listOfFiles[i].isFile()) {
-				String filename = listOfFiles[i].getName();
-				String extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length());
-				if(extension.equals("zip"))
-				{
-					List.add(filename);
-				}
-			} 
+		File folder = new File(Config.getPath());
+		if (folder.exists()) {
+			
+			File[] listOfFiles = folder.listFiles();
+
+			for (int i = 0; i < listOfFiles.length; i++) {
+				if (listOfFiles[i].isFile()) {
+					String filename = listOfFiles[i].getName();
+					String extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length());
+					if(extension.equals("zip"))
+					{
+						List.add(filename);
+					}
+				} 
+			}
 		}
 		return List;
 	}

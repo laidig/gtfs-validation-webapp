@@ -29,13 +29,23 @@
 	      <%=asset.CSS("bargraph.css",request)%>
 	    <!-- END: load jqplot -->
 </head>
+<style>
+.graphGTFS {
+    margin: 0 auto;
+    min-width: 800px;
+    padding: 80px 0;
+    width: 90%;
+    padding-bottom:30px;
+}
+</style>
 <script>
 $(document).ready(function(){
+
 	  labels = ["YU", "BLA","TEST"];
-	  Dates = ["Jan 19", "Jan 20", "Jan 21"];
-	  var Depot1 = [2.61,5.00,6.00];
-	  var Depot2 = [2.61,5.00,6.00];
-	  var Depot3 = [2.61,5.00,6.00];
+	  Dates = ["Jan 19", "Jan 20", "Jan 21", "Jan 22"];
+	  var Depot1 = [[1, 7, "YU"], [2, 14, "YU"], [3, 1, "YU"],[4, 2, "YU"]];
+	  var Depot2 = [[1, 7, "BLA"], [2, 14, "BLA"], [3, 1, "BLA"],[4, 2, "BLA"]];
+	  var Depot3 = [[1, 7, "TEST"], [2, 14, "TEST"], [3, 1, "TEST"],[4, 2, "TEST"]];
 
 	  var file = "File Name"
 	  
@@ -48,6 +58,15 @@ $(document).ready(function(){
 
 </script>
 <body>
+<div class="graphGTFS">
+
 	<div id="north" class="bargraph"></div>
+
+</div>
+<div class="graphGTFS">
+
+	<div id="north" class="bargraph"></div>
+
+</div>
 </body>
 </html>

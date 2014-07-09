@@ -23,12 +23,16 @@ function BarChart(title)
 				    barWidth: 15,
 				    highlightMouseOver: true
 		      },
-			highlighter:{
-			    show:true,
-			    tooltipAxes: 'y',
-			    formatString:'<div class="graph_tooltip" style="border: 1px solid black">TEST: %s</div>'
-			},
-		      pointLabels: {show: true}
+		      highlighter: {
+		  		sizeAdjust: 10,
+		  		show: true,
+		          tooltipLocation: 'n',
+		          tooltipAxes: 'y',
+		  		tooltipOffset:+10,
+		  		yvalue:2,
+		  		formatString:'<span class="graph_tooltip" style="border: 1px solid black"><span style="display:none;">%s</span>Trip Count: %s Depot: %s</span>',
+		          useAxesFormatters: false
+		  		}
 		    },
 	        highlighter:{
 		    show:true,
@@ -48,9 +52,17 @@ function BarChart(title)
 				ticks: Dates
 			},
 			yaxis: {
-				label: 'Trips per Depot',
-				labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-				autoscale:true,
+	            tickRenderer:$.jqplot.CanvasAxisTickRenderer,
+	            labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+				tickOptions:{
+	                labelPosition: 'middle',
+	                angle:-30
+	            },
+				labelOptions:{
+	                fontFamily:'Helvetica',
+	                fontSize: '14pt'
+	            },
+				label: 'Trips per Depot'
 			}
 		}
 	};
