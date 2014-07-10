@@ -30,7 +30,7 @@ function BarChart(title)
 		          tooltipAxes: 'y',
 		  		tooltipOffset:+10,
 		  		yvalue:2,
-		  		formatString:'<span class="graph_tooltip" style="border: 1px solid black"><span style="display:none;">%s</span>Trip Count: %s Depot: %s</span>',
+		  		formatString:'<span class="graph_tooltip" style="border: 1px solid black"><span style="display:none;">%s</span>Trip Count: %s</span>',
 		          useAxesFormatters: false
 		  		}
 		    },

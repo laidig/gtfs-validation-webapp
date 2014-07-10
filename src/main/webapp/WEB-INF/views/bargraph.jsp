@@ -43,9 +43,9 @@ $(document).ready(function(){
 
 	  labels = ["YU", "BLA","TEST"];
 	  Dates = ["Jan 19", "Jan 20", "Jan 21", "Jan 22"];
-	  var Depot1 = [[1, 7, "YU"], [2, 14, "YU"], [3, 1, "YU"],[4, 2, "YU"]];
-	  var Depot2 = [[1, 7, "BLA"], [2, 14, "BLA"], [3, 1, "BLA"],[4, 2, "BLA"]];
-	  var Depot3 = [[1, 7, "TEST"], [2, 14, "TEST"], [3, 1, "TEST"],[4, 2, "TEST"]];
+	  var Depot1 = [7, 2, 1, 5];
+	  var Depot2 = [7, 2, 1, 5];
+	  var Depot3 = [7, 2, 1, 5];
 
 	  var file = "File Name"
 	  
