@@ -1,4 +1,4 @@
-function BarChart(title)
+function BarChart(title,Labels,Dates,Depots)
   {
 	var optionsObj = {		
 		title: title,
@@ -10,7 +10,7 @@ function BarChart(title)
 				numberRows: 1
 			},
 			placement: 'outsideGrid',
-			labels: labels,
+			labels: Labels,
 			location: 's'
 		},
 		animate: true,

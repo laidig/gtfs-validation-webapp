@@ -33,7 +33,9 @@
 </style>
 <script>
 	$(document).ready(function() {
+		
 		$("#gtfs_build").submit(function(event) {
+			
 			var list = 0;
 			$('#gtfs_build option').each(function() {
 
@@ -42,10 +44,11 @@
 			});
 
 			if (list == 0) {
-				alert("Please select a zip file");
+				alert("Please select at least zip file");
 				return false;
 			} else {
 				$("#loading").show();
+				
 				$.ajax({
 					type : "POST",
 					url : "build",
@@ -59,6 +62,21 @@
 
 				// event.preventDefault();
 			}
+		});
+		
+		$("#gtfs_csv").submit(function(event) {
+			
+			var list = 0;
+			$('#gtfs_csv option').each(function() {
+
+				if ($(this).is(':selected'))
+					list++;
+			});
+
+			if (list == 0) {
+				alert("Please select at least one csv file");
+				return false;
+			} 
 		});
 
 	});
