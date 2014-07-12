@@ -7,7 +7,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,7 +23,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import au.com.bytecode.opencsv.CSVReader;
-import au.com.bytecode.opencsv.CSVWriter;
 
 import com.conveyal.gtfs.service.CalendarDateVerificationService;
 import com.conveyal.gtfs.service.impl.GtfsStatisticsService;
@@ -40,7 +41,6 @@ public class GTFSContainer {
 		GtfsMutableRelationalDao gtfsMDao = null;
 		GtfsStatisticsService gtfsStats = null;
 		CalendarDateVerificationService cdvs = null;
-
 		GtfsReader reader = new GtfsReader();
 		gtfsMDao = new GtfsRelationalDaoImpl();
 		File gtfsFile = new File(Config.getPath()+Location);
@@ -58,7 +58,7 @@ public class GTFSContainer {
 		}
 
 		reader.setEntityStore(gtfsMDao);
-		System.out.println(reader.getEntityStore());
+	//	System.out.println(reader.getEntityStore());
 
 		try {
 			reader.run();
@@ -68,37 +68,87 @@ public class GTFSContainer {
 
 		gtfsStats = new GtfsStatisticsService(gtfsMDao);
 		cdvs = new CalendarDateVerificationService(gtfsMDao);
-		
+		List<AgencyAndId> ServiceID = gtfsMDao.getAllServiceIds();
+		HashMap<String,Integer> Header = new HashMap<String,Integer>();
+		int index = 1;
+		ArrayList<String> CSVData = new ArrayList<String>();
+		CSVData.add("date");
+		for(AgencyAndId IDs: ServiceID){
+			String[] Depot = IDs.getId().split("_");
+			String DepotTemp = "trips_"+Depot[0];
+			if(!Header.containsKey(DepotTemp))
+			{
+				CSVData.add(DepotTemp);
+				Header.put(DepotTemp, index);
+			//	System.out.println(DepotTemp);
+				index++;
+			}
+			
+		}
 		Calendar start = Calendar.getInstance();
 		start.setTime(gtfsStats.getCalendarServiceRangeStart());
 		Calendar end = Calendar.getInstance();
 		end.setTime(gtfsStats.getCalendarServiceRangeEnd());
 
+		String[] CSVArray = new String[CSVData.size()];
+		CSVArray = CSVData.toArray(CSVArray);
+		
+		ArrayList<String[]> CSVList = new ArrayList<String[]>();
+		CSVList.add(CSVArray);
 		for (Date date = start.getTime(); !start.after(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
-
-			System.out.println(cdvs.getServiceIdsForDate().get(date));
+			
+			CSVArray = new String[CSVData.size()];
+			Arrays.fill(CSVArray, "0");
+			String DateFormated = new SimpleDateFormat("MM-dd").format(date);
+			CSVArray[0] = DateFormated;
+			
 			for(AgencyAndId ServiceIDs: cdvs.getServiceIdsForDate().get(date))
 			{
-				System.out.println(cdvs.getTripCountsForAllServiceIDs().get(ServiceIDs));
+				String[] Depot = ServiceIDs.getId().split("_");
+				String DepotTemp = "trips_"+Depot[0];
+				
+				
+				if(Header.containsKey(DepotTemp))
+				{
+					int DepotIndex = Header.get(DepotTemp);
+	
+					int Previous = Integer.parseInt(CSVArray[DepotIndex]);
+					int CurrentTrips  = cdvs.getTripCountsForAllServiceIDs().get(ServiceIDs);
+					CSVArray[DepotIndex] = Integer.toString( Previous + CurrentTrips);
+				}
+				//System.out.println(cdvs.getTripCountsForAllServiceIDs().get(ServiceIDs));
 			}
+			
+			CSVList.add(CSVArray);
 		}
 
+		generateCsvFile(Config.getPath()+Location.replace("zip", "csv"), CSVList);
 	}
 
-	private static void generateCsvFile(String sFileName, String[] Data)
+	private static void generateCsvFile(String sFileName, ArrayList<String[]> CSVList)
 	{
 		try
 		{
+			
+			File fileTemp = new File(sFileName);
+			if (fileTemp.exists()){
+			    fileTemp.delete();
+			}
 			FileWriter writer = new FileWriter(sFileName);
-
-			int index = Data.length-1;
-			for(String value : Data)
+			
+			for(String[] CSVData : CSVList)
 			{
-				writer.append(value);
-				if(index == 0)
-					writer.append('\n');
-				else
-					writer.append(',');
+				int index = CSVData.length-1;
+				for(String value : CSVData)
+				{
+					writer.append(value);
+					if(index == 0)
+						writer.append('\n');
+					else
+						writer.append(',');
+					
+					index--;
+				}
 			}
 
 			//generate whatever data you want
