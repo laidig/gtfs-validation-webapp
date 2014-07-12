@@ -47,7 +47,7 @@ function BarChart(title,Labels,Dates,Depots)
 			xaxis: {
 				renderer: $.jqplot.CategoryAxisRenderer,
 				tickOptions: {
-					angle: -30,
+					angle: -90,
 				},
 				ticks: Dates
 			},
