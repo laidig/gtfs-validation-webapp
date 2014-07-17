@@ -74,17 +74,29 @@ public class GTFSContainer {
 		ArrayList<String> CSVData = new ArrayList<String>();
 		CSVData.add("date");
 		for(AgencyAndId IDs: ServiceID){
+			
 			String[] Depot = IDs.getId().split("_");
-			String DepotTemp = "trips_"+Depot[0];
+			String DepotTemp = "trips_";
+			
+			if(IDs.getAgencyId().equals("MTABC"))
+			{
+				Depot = Depot[0].split("-");
+				DepotTemp = DepotTemp + Depot[1];
+			}else{
+				DepotTemp = DepotTemp + Depot[0];
+			}
+			
+
 			if(!Header.containsKey(DepotTemp))
 			{
 				CSVData.add(DepotTemp);
 				Header.put(DepotTemp, index);
-			//	System.out.println(DepotTemp);
+				//System.out.println(DepotTemp);
 				index++;
 			}
 			
 		}
+		
 		Calendar start = Calendar.getInstance();
 		start.setTime(gtfsStats.getCalendarServiceRangeStart());
 		Calendar end = Calendar.getInstance();
@@ -105,18 +117,33 @@ public class GTFSContainer {
 			for(AgencyAndId ServiceIDs: cdvs.getServiceIdsForDate().get(date))
 			{
 				String[] Depot = ServiceIDs.getId().split("_");
-				String DepotTemp = "trips_"+Depot[0];
+				String DepotTemp = "trips_";
 				
+				if(ServiceIDs.getAgencyId().equals("MTABC"))
+				{
+					Depot = Depot[0].split("-");
+					DepotTemp = DepotTemp + Depot[1];
+				}else{
+					DepotTemp = DepotTemp + Depot[0];
+				}
+			//	System.out.println(DepotTemp);
 				
 				if(Header.containsKey(DepotTemp))
-				{
+				{	
+				
+					int CurrentTrips  = 0;
 					int DepotIndex = Header.get(DepotTemp);
-	
 					int Previous = Integer.parseInt(CSVArray[DepotIndex]);
-					int CurrentTrips  = cdvs.getTripCountsForAllServiceIDs().get(ServiceIDs);
+				//	System.out.println("Service ID" + ServiceIDs);
+				//	System.out.println("Trips " + cdvs.getTripCountsForAllServiceIDs().get(ServiceIDs));
+					try{
+						CurrentTrips  = cdvs.getTripCountsForAllServiceIDs().get(ServiceIDs);
+					}catch (Exception e) {
+						System.out.println("Date: "+CSVArray[0]+" No trips for service ID "+ServiceIDs);				
+					}
 					CSVArray[DepotIndex] = Integer.toString( Previous + CurrentTrips);
 				}
-				//System.out.println(cdvs.getTripCountsForAllServiceIDs().get(ServiceIDs));
+				
 			}
 			
 			CSVList.add(CSVArray);
