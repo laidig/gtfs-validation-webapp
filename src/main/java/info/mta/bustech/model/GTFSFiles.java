@@ -33,19 +33,42 @@ public class GTFSFiles {
 			File[] listOfFiles = folder.listFiles();
 
 			for (int i = 0; i < listOfFiles.length; i++) {
+		
 				if (listOfFiles[i].isFile()) {
 					String filename = listOfFiles[i].getName();
 					String extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length());
+					
 					if(extension.equals("zip"))
 					{
 						ZIPList.add(filename);
-					}else if(extension.equals("csv"))
+					}
+				} 
+			}
+		}
+
+	
+		String CSVPath =  Config.getRealPath()+Config.getCSVPath();
+
+		folder = new File(CSVPath);
+		
+		if (folder.exists()) {
+
+			File[] listOfFiles = folder.listFiles();
+
+			for (int i = 0; i < listOfFiles.length; i++) {
+			
+				if (listOfFiles[i].isFile()) {
+					String filename = listOfFiles[i].getName();
+					String extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length());
+					
+					if(extension.equals("csv"))
 					{
 						CSVList.add(filename);
 					}
 				} 
 			}
-		}
+		}	
+		
 		List.put("zip", ZIPList);
 		List.put("csv",CSVList);
 		return List;

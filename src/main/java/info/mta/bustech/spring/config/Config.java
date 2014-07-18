@@ -8,7 +8,9 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.JstlView;  
 import org.springframework.web.servlet.view.UrlBasedViewResolver;  
-  
+
+import java.io.IOException;
+
 @Configuration //Marks this class as configuration
 //Specifies which package to scan
 @ComponentScan("info.mta.bustech.spring")
@@ -29,4 +31,5 @@ public class Config extends WebMvcConfigurerAdapter{
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 	    registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	}
+	
 }  

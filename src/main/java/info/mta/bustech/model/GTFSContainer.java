@@ -134,8 +134,7 @@ public class GTFSContainer {
 					int CurrentTrips  = 0;
 					int DepotIndex = Header.get(DepotTemp);
 					int Previous = Integer.parseInt(CSVArray[DepotIndex]);
-				//	System.out.println("Service ID" + ServiceIDs);
-				//	System.out.println("Trips " + cdvs.getTripCountsForAllServiceIDs().get(ServiceIDs));
+
 					try{
 						CurrentTrips  = cdvs.getTripCountsForAllServiceIDs().get(ServiceIDs);
 					}catch (Exception e) {
@@ -149,7 +148,7 @@ public class GTFSContainer {
 			CSVList.add(CSVArray);
 		}
 
-		generateCsvFile(Config.getPath()+Location.replace("zip", "csv"), CSVList);
+		generateCsvFile(Config.getRealPath()+Config.getCSVPath()+Location.replace("zip", "csv"), CSVList);
 	}
 
 	private static void generateCsvFile(String sFileName, ArrayList<String[]> CSVList)
@@ -196,7 +195,7 @@ public class GTFSContainer {
 		HashMap<String,ArrayList> Trips = new HashMap<String,ArrayList>();
 		TwoDimentionalArrayList<Integer> TripCount = new TwoDimentionalArrayList<Integer>();
 		try {
-			reader = new CSVReader(new FileReader(Config.getPath()+File));
+			reader = new CSVReader(new FileReader(Config.getRealPath()+Config.getCSVPath()+File));
 
 			String[] nextLine;
 			try {
