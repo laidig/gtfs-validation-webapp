@@ -114,7 +114,7 @@ public class GTFSContainer {
 			String DateFormated = new SimpleDateFormat("MM-dd").format(date);
 			CSVArray[0] = DateFormated;
 			
-			for(AgencyAndId ServiceIDs: cdvs.getServiceIdsForDate().get(date))
+			for(AgencyAndId ServiceIDs: cdvs.getServiceIdsForDates().get(date))
 			{
 				String[] Depot = ServiceIDs.getId().split("_");
 				String DepotTemp = "trips_";
